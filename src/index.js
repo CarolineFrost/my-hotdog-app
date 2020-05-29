@@ -1,17 +1,30 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
+import {Elements} from '@stripe/react-stripe-js';
+import {loadStripe} from '@stripe/stripe-js';
+import CheckoutForm from './CheckoutForm'
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+//add personal secret key here
+const stripe = require('stripe')('sk_test_4eC39HqLyjWDarjtT1zdp7dc');
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+
+// Make sure to call `loadStripe` outside of a component’s render to avoid
+// recreating the `Stripe` object on every render.
+// add personal public key here
+const stripePromise = loadStripe("pk_test_dovzyN9e5iKoiEKuPqLDUejl00yKn9HPcp");
+
+function App() {
+  return (
+    <div>
+    <header>
+      My Hotdog Stripe App
+    </header>
+    <Elements stripe={stripePromise}>
+      <CheckoutForm />
+    </Elements>
+    </div>
+  );
+};
+
+ReactDOM.render(<App />, document.getElementById('root'));
